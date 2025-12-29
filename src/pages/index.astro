@@ -1,11 +1,746 @@
 ---
-import Welcome from '../components/Welcome.astro';
 import Layout from '../layouts/Layout.astro';
 
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+const questions = [
+	{ en: "Is talkative", zh: "健谈的", ja: "話し好きである", ko: "말이 많다", es: "Es hablador/a", fr: "Est bavard(e)", it: "È loquace" },
+	{ en: "Tends to find fault with others", zh: "喜欢挑别人的毛病", ja: "他人の欠点を探す傾向がある", ko: "다른 사람의 결점을 찾는 경향이 있다", es: "Tiende a encontrar faltas en los demás", fr: "A tendance à trouver des défauts aux autres", it: "Tende a trovare difetti negli altri" },
+	{ en: "Does a thorough job", zh: "做事彻底", ja: "仕事を彻底的にやる", ko: "일을 철저하게 한다", es: "Hace un trabajo minucioso", fr: "Fait un travail minutieux", it: "Svolge i compiti in modo meticoloso" },
+	{ en: "Is depressed, blue", zh: "情绪低落、忧郁", ja: "落ち込みやすく、忧郁になる", ko: "우울하거나 기분이 처질 때가 있다", es: "Está deprimido/a, triste", fr: "Est déprimé(e), triste", it: "È depresso/a, malinconico/a" },
+	{ en: "Is original, comes up with new ideas", zh: "有创意，能想出新点子", ja: "独创的で、新しいアイデアを思いつく", ko: "독창적이며 새로운 아이디어를 낸다", es: "Es original, se le ocurren nuevas ideas", fr: "Est original(e), a de nouvelles idées", it: "È originale, ha sempre nuove idee" },
+	{ en: "Is reserved", zh: "内敛、矜持", ja: "控えめである", ko: "내성적이다", es: "Es reservado/a", fr: "Est réservé(e)", it: "È riservato/a" },
+	{ en: "Is helpful and unselfish with others", zh: "乐于助人且无私", ja: "他人に亲切で无私である", ko: "다른 사람들에게 도움이 되고 이타적이다", es: "Es servicial y desinteresado/a con los demás", fr: "Est serviable et désintéressé(e) avec les autres", it: "È disponibile e altruista con gli altri" },
+	{ en: "Can be somewhat careless", zh: "有时会粗心大意", ja: "いくらか不注意なところがある", ko: "다소 부주의할 때가 있다", es: "Puede ser algo descuidado/a", fr: "Peut être quelque peu insouciant(e)", it: "Può essere un po' trascurato/a" },
+	{ en: "Is relaxed, handles stress well", zh: "轻松自在，能很好地应对压力", ja: "リラックスしており、ストレスにうまく対処できる", ko: "편안하고 스트레스를 잘 다스린다", es: "Es relajado/a, maneja bien el estrés", fr: "Est détendu(e), gère bien le stress", it: "È rilassato/a, gestisce bene lo stress" },
+	{ en: "Is curious about many different things", zh: "对许多不同的事物感到好奇", ja: "多くの异なることに好奇心がある", ko: "다양한 것들에 호기심이 많다", es: "Tiene curiosidad por muchas cosas diferentes", fr: "Est curieux/se de beaucoup de choses différentes", it: "È curioso/a riguardo a molte cose" },
+	{ en: "Is full of energy", zh: "精力充沛", ja: "エネルギーに満ち溢れている", ko: "에너지가 넘친다", es: "Está lleno/a de energía", fr: "Est plein(e) d'énergie", it: "È pieno/a di energia" },
+	{ en: "Starts quarrels with others", zh: "容易与他人发生争执", ja: "他人と口论を始める", ko: "다른 사람과 말다툼을 시작한다", es: "Inicia peleas con los demás", fr: "Commence des querelles avec les autres", it: "Attacca briga con gli altri" },
+	{ en: "Is a reliable worker", zh: "是一个可靠的工作者", ja: "信頼できる働き手である", ko: "믿음직한 일꾼이다", es: "Es un trabajador/a confiable", fr: "Est un travailleur/se fiable", it: "È un lavoratore/lavoratrice affidabile" },
+	{ en: "Can be tense", zh: "容易紧张", ja: "紧张しやすい", ko: "긴장할 때가 있다", es: "Puede estar tenso/a", fr: "Peut être tendu(e)", it: "Può essere teso/a" },
+	{ en: "Is ingenious, a deep thinker", zh: "聪慧机智，善于深思", ja: "独创的で、深く考える人である", ko: "기발하고 깊이 생각하는 사람이다", es: "Es ingenioso/a, un pensador/a profundo/a", fr: "Est ingénieux/se, un penseur/se profond(e)", it: "È ingegnoso/a, un pensatore/una pensatrice profondo/a" },
+	{ en: "Generates a lot of enthusiasm", zh: "能激发很多热情", ja: "多くの热意を生み出す", ko: "많은 열정을 불러일으킨다", es: "Genera mucho entusiasmo", fr: "Génère beaucoup d'enthousiasme", it: "Genera molto entusiasmo" },
+	{ en: "Has a forgiving nature", zh: "宽容大度", ja: "寛容な性格である", ko: "너그러운 성품을 가졌다", es: "Tiene una naturaleza que perdona", fr: "A une nature pardonnante", it: "Ha un carattere incline al perdono" },
+	{ en: "Tends to be disorganized", zh: "做事缺乏条理", ja: "乱雑になりがちである", ko: "무질서한 경향이 있다", es: "Tiende a ser desorganizado/a", fr: "A tendance à être désorganisé(e)", it: "Tende a essere disorganizzato/a" },
+	{ en: "Worries a lot", zh: "经常忧虑", ja: "心配性である", ko: "걱정이 많다", es: "Se preocupa mucho", fr: "S'inquiète beaucoup", it: "Si preoccupa molto" },
+	{ en: "Has an active imagination", zh: "想象力丰富", ja: "想像力が豊かである", ko: "상상력이 풍부하다", es: "Tiene una imaginación activa", fr: "A une imagination active", it: "Ha un'immaginazione attiva" },
+	{ en: "Tends to be quiet", zh: "比较安静", ja: "静かである倾向がある", ko: "조용한 편이다", es: "Tiende a ser silencioso/a", fr: "A tendance à être calme", it: "Tende a essere silenzioso/a" },
+	{ en: "Is generally trusting", zh: "通常信任他人", ja: "一般的に人を信じる", ko: "일반적으로 사람을 잘 믿는다", es: "Es generalmente confiado/a", fr: "Est generalmente confiant(e)", it: "Si fida generalmente degli altri" },
+	{ en: "Tends to be lazy", zh: "比较懒散", ja: "怠惰になりがちである", ko: "게으른 편이다", es: "Tiende a ser perezoso/a", fr: "A tendance à être pareux/se", it: "Tende a essere pigro/a" },
+	{ en: "Is emotionally stable, not easily upset", zh: "情绪稳定，不容易心烦意乱", ja: "情绪的に安定しており、动揺しにくい", ko: "정서적으로 안정되어 있고 쉽게 화내지 않는다", es: "Es emocionalmente estable, no se altera fácilmente", fr: "Est émotionnellement stable, pas facilement bouleversé(e)", it: "È emotivamente stabile, non si altera facilmente" },
+	{ en: "Is inventive", zh: "有创造力", ja: "发明の才がある", ko: "창의적이다", es: "Es inventivo/a", fr: "Est inventif/ve", it: "È inventivo/a" },
+	{ en: "Has an assertive personality", zh: "性格坚定自信", ja: "积极的な性格である", ko: "자기주장이 강한 성격이다", es: "Tiene una personalidad asertiva", fr: "A une personnalité assertive", it: "Ha una personalità assertiva" },
+	{ en: "Can be cold and aloof", zh: "有时冷漠疏远", ja: "冷淡でよそよそしいところがある", ko: "차갑고 냉담할 때가 있다", es: "Puede ser frío/a y distante", fr: "Peut être froid(e) et distant(e)", it: "Può essere freddo/a e distaccato/a" },
+	{ en: "Perseveres until the task is finished", zh: "坚持不懈直到任务完成", ja: "仕事が終わるまでやり抜く", ko: "일이 끝날 때까지 끈기 있게 한다", es: "Persevera hasta que termina la tarea", fr: "Persévère jusqu'à ce que la tâche soit terminée", it: "Persevera finché il compito non è finito" },
+	{ en: "Can be moody", zh: "情绪多变", ja: "気分屋であるところがある", ko: "변덕스러울 때가 있다", es: "Puede ser temperamental", fr: "Peut être d'humeur changeante", it: "Può essere lunatico/a" },
+	{ en: "Values artistic, aesthetic experiences", zh: "重视艺术和审美体验", ja: "芸术的・美的な体験を大切にする", ko: "예술적, 미적 경험을 소중히 여긴다", es: "Valora las experiencias artísticas y estéticas", fr: "Apprécie les expériences artistiques et esthétiques", it: "Dà valore alle esperienze artistiche ed estetiche" },
+	{ en: "Is sometimes shy, inhibited", zh: "有时害羞、拘谨", ja: "时々耻ずかしがり屋で、控えめになる", ko: "때때로 수줍음을 타고 어색해한다", es: "A veces es tímido/a, inhibido/a", fr: "Est parfois timide, inhibé(e)", it: "A volte è timido/a, inibito/a" },
+	{ en: "Is considerate and kind to almost everyone", zh: "对几乎所有人都体贴友善", ja: "ほとんどすべての人に思いやりがあり、亲切である", ko: "거의 모든 사람에게 사려 깊고 친절하다", es: "Es considerado/a y amable con casi todos", fr: "Est attentionné(e) et gentil(le) avec presque tout le monde", it: "È premuroso/a e gentile con tutti" },
+	{ en: "Does things efficiently", zh: "做事高效", ja: "物事を効率的に行う", ko: "일을 효율적으로 한다", es: "Hace las cosas de manera eficiente", fr: "Fait les choses efficacement", it: "Fa le cose in modo efficiente" },
+	{ en: "Remains calm in tense situations", zh: "在紧张情况下保持冷静", ja: "紧张する场面でも冷静でいられる", ko: "긴장된 상황에서도 침착함을 유지한다", es: "Permanece tranquilo/a en situaciones tensas", fr: "Reste calme dans les situations tendues", it: "Rimane calmo/a nelle situazioni di tensione" },
+	{ en: "Prefers work that is routine", zh: "喜欢常规性的工作", ja: "ルーチンワークを好む", ko: "반복적인 일을 선호한다", es: "Prefiere el trabajo que es rutinario", fr: "Préfère un travail routinier", it: "Preferisce il lavoro di routine" },
+	{ en: "Is outgoing, sociable", zh: "外向、善于社交", ja: "外交的で社交的である", ko: "외향적이고 사교적이다", es: "Es extrovertido/a, sociable", fr: "Est extraverti(e), sociable", it: "È estroverso/a, socievole" },
+	{ en: "Is sometimes rude to others", zh: "有时对他人不礼貌", ja: "时々他人に失礼な态度をとる", ko: "때때로 다른 사람들에게 무례하다", es: "A veces es grosero/a con los demás", fr: "Est parfois impoli(e) envers les autres", it: "A volte è rude con gli altri" },
+	{ en: "Makes plans and follows through with them", zh: "制定计划并坚持执行", ja: "计画を立て、それをやり遂げる", ko: "계획을 세우고 끝까지 실천한다", es: "Hace planes y los lleva a cabo", fr: "Fait des plans et les suit", it: "Fa piani e li porta a termine" },
+	{ en: "Gets nervous easily", zh: "容易紧张不安", ja: "すぐに紧张する", ko: "쉽게 초조해진다", es: "Se pone nervioso/a con facilidad", fr: "Devient nerveux/se facilement", it: "Si innervosisce facilmente" },
+	{ en: "Likes to reflect, play with ideas", zh: "喜欢思考、玩味各种想法", ja: "熟考することや、アイデアを练ることが好きである", ko: "심사숙고하고 아이디어를 다루는 것을 좋아한다", es: "Le gusta reflexionar, jugar con ideas", fr: "Aime réfléchir, jouer avec des idées", it: "Ama riflettere, giocare con le idee" },
+	{ en: "Has few artistic interests", zh: "对艺术兴趣不大", ja: "芸术的な兴味がほとんどない", ko: "예술적 관심이 거의 없다", es: "Tiene pocos intereses artísticos", fr: "A peu d'intérêts artistiques", it: "Ha pochi interessi artistici" },
+	{ en: "Likes to cooperate with others", zh: "喜欢与他人合作", ja: "他人と协力することが好きである", ko: "다른 사람들과 협력하는 것을 좋아한다", es: "Le gusta cooperar con los demás", fr: "Aime coopérer avec les autres", it: "Ama cooperare con gli altri" },
+	{ en: "Is easily distracted", zh: "容易分心", ja: "気が散りやすい", ko: "쉽게 주의가 산만해진다", es: "Se distrae fácilmente", fr: "Est facilement distrait(e)", it: "Si distrae facilmente" },
+	{ en: "Is sophisticated in art, music, or literature", zh: "在艺术、音乐或文学方面有较高修养", ja: "芸术、音楽、文学に精通している", ko: "예술, 음악 또는 문학에 조예가 깊다", es: "Es sofisticado/a en arte, música o literatura", fr: "Est sophistiqué(e) en art, musique ou littérature", it: "Si intende di arte, musica o letteratura" }
+];
+
+const scales = [
+	{ value: 1, en: "Disagree strongly", zh: "非常不同意", ja: "全く同意しない", ko: "매우 반대한다", es: "Muy en desacuerdo", fr: "Fortement en désaccord", it: "Fortemente in disaccordo" },
+	{ value: 2, en: "Disagree a little", zh: "有点不同意", ja: "少し同意しない", ko: "약간 반대한다", es: "Un poco en desacuerdo", fr: "Un peu en désaccord", it: "Un po' in disaccordo" },
+	{ value: 3, en: "Neither agree nor disagree", zh: "既不同意也不反对", ja: "どちらでもない", ko: "보통이다", es: "Ni de acuerdo ni en desacuerdo", fr: "Ni d'accord ni en désaccord", it: "Né d'accordo né in disaccordo" },
+	{ value: 4, en: "Agree a little", zh: "有点同意", ja: "少し同意する", ko: "약간 찬성한다", es: "Un poco de acuerdo", fr: "Un peu d'accord", it: "Un po' d'accordo" },
+	{ value: 5, en: "Agree strongly", zh: "非常同意", ja: "強く同意する", ko: "매우 찬성한다", es: "Muy de acuerdo", fr: "Fortement d'accord", it: "Fortemente d'accordo" }
+];
+
+const traitConfig = {
+	O: {
+		name: "Openness",
+		fullName: { en: "Openness", zh: "开放性", ja: "開放性", ko: "개방성", es: "Apertura", fr: "Ouverture", it: "Apertura" },
+		color: "#a855f7",
+		icon: "🎨",
+		forward: [4, 9, 14, 19, 24, 29, 39, 43],
+		reverse: [34, 40]
+	},
+	C: {
+		name: "Conscientiousness",
+		fullName: { en: "Conscientiousness", zh: "尽责性", ja: "誠実性", ko: "성실성", es: "Responsabilidad", fr: "Conscience", it: "Coscienziosità" },
+		color: "#3b82f6",
+		icon: "📋",
+		forward: [2, 12, 27, 32, 37],
+		reverse: [7, 17, 22, 42]
+	},
+	E: {
+		name: "Extraversion",
+		fullName: { en: "Extraversion", zh: "外向性", ja: "外向性", ko: "외향성", es: "Extraversión", fr: "Extraversion", it: "Estroversione" },
+		color: "#f59e0b",
+		icon: "⚡",
+		forward: [0, 10, 15, 25, 35],
+		reverse: [5, 20, 30]
+	},
+	A: {
+		name: "Agreeableness",
+		fullName: { en: "Agreeableness", zh: "宜人性", ja: "協調性", ko: "우호성", es: "Amabilidad", fr: "Agréabilité", it: "Gradevolezza" },
+		color: "#10b981",
+		icon: "🤝",
+		forward: [6, 16, 21, 31, 41],
+		reverse: [1, 11, 26, 36]
+	},
+	N: {
+		name: "Neuroticism",
+		fullName: { en: "Neuroticism", zh: "神经质", ja: "神経症的傾向", ko: "신경증", es: "Neuroticismo", fr: "Névrosisme", it: "Nevroticismo" },
+		color: "#ef4444",
+		icon: "🌊",
+		forward: [3, 13, 18, 28, 38],
+		reverse: [8, 23, 33]
+	}
+};
+
+const personas = [
+	{ id: "explorer", name: { en: "The Adventurous Explorer", zh: "冒险探索者", ja: "冒険好きな探検家", ko: "모험적인 탐험가", es: "El Explorador Aventurero", fr: "L'Explorateur Aventureux", it: "L'Esploratore Avventuroso" }, criteria: (s) => s.O >= 70 && s.E >= 60 },
+	{ id: "architect", name: { en: "The Disciplined Architect", zh: "严谨建筑师", ja: "規律正しい建築家", ko: "훈련된 건축가", es: "El Arquitecto Disciplinado", fr: "L'Architecte Discipliné", it: "L'Architetto Disciplinato" }, criteria: (s) => s.C >= 75 && s.O >= 60 },
+	{ id: "caregiver", name: { en: "The Compassionate Caregiver", zh: "慈悲关怀者", ja: "慈悲深い介護者", ko: "자비로운 보살핌이", es: "El Cuidador Compasivo", fr: "Le Soignant Compatissant", it: "Il Caregiver Compassionevole" }, criteria: (s) => s.A >= 75 && s.C >= 60 },
+	{ id: "default", name: { en: "The Balanced Soul", zh: "平衡之魂", ja: "バランスの取れた魂", ko: "균형 잡힌 영혼", es: "El Alma Equilibrada", fr: "L'Âme Équilibrée", it: "L'Anima Equilibrata" }, criteria: () => true }
+];
 ---
 
 <Layout>
-	<Welcome />
+	<!-- Navigation & Settings -->
+	<header class="app-header">
+		<div class="logo">
+			<span class="text-en">BFI-44 Personality</span>
+			<span class="text-zh">BFI-44 大五人格</span>
+			<span class="text-ja">BFI-44 性格診断</span>
+			<span class="text-ko">BFI-44 성격 검사</span>
+			<span class="text-it">BFI-44 Personalità</span>
+			<span class="text-es">BFI-44 Personalidad</span>
+			<span class="text-fr">BFI-44 Personnalité</span>
+		</div>
+		<div class="header-controls">
+			<div class="lang-dropdown">
+				<button id="lang-toggle" class="control-btn" aria-haspopup="true" aria-expanded="false">
+					🌐 <span id="current-lang-label">EN</span>
+				</button>
+				<div class="dropdown-menu" id="lang-menu">
+					<button class="menu-item" data-lang-set="en">English</button>
+					<button class="menu-item" data-lang-set="zh">简体中文</button>
+					<button class="menu-item" data-lang-set="ja">日本語</button>
+					<button class="menu-item" data-lang-set="ko">한국어</button>
+					<button class="menu-item" data-lang-set="it">Italiano</button>
+					<button class="menu-item" data-lang-set="es">Español</button>
+					<button class="menu-item" data-lang-set="fr">Français</button>
+				</div>
+			</div>
+			<button id="theme-toggle" class="control-btn">
+				<span class="icon-sun">☀️</span>
+				<span class="icon-moon">🌙</span>
+			</button>
+		</div>
+	</header>
+
+	<div class="container">
+		<!-- Welcome Screen -->
+		<div id="welcome-screen" class="screen active full-screen-welcome">
+			<div class="welcome-content">
+				<div class="welcome-badge">
+					<span class="text-en">Psychological Assessment</span>
+					<span class="text-zh">心理评估</span>
+					<span class="text-ja">心理アセスメント</span>
+					<span class="text-ko">심리 평가</span>
+					<span class="text-es">Evaluación Psicológica</span>
+					<span class="text-fr">Évaluation Psychologique</span>
+					<span class="text-it">Valutazione Psicologica</span>
+				</div>
+				<h1 class="welcome-title">
+					<span class="text-en">Discover Your True Self</span>
+					<span class="text-zh">发现真实的自我</span>
+					<span class="text-ja">真実の自分を見つける</span>
+					<span class="text-ko">진정한 자아를 발견하세요</span>
+					<span class="text-es">Descubre tu Verdadero Yo</span>
+					<span class="text-fr">Découvrez Votre Vrai Moi</span>
+					<span class="text-it">Scopri il Tuo Vero Io</span>
+				</h1>
+				<p class="welcome-subtitle">
+					<span class="text-en">The Big Five Personality Test is the most scientifically validated way to measure character.</span>
+					<span class="text-zh">大五人格测试是衡量性格最科学、最有效的方法。</span>
+					<span class="text-it">Il test dei Big Five è il metodo più scientificamente validato per misurare il carattere.</span>
+					<span class="text-ja">性格診断の最も科学的な手法です。</span>
+					<span class="text-ko">과학적으로 입증된 성격 검사입니다.</span>
+					<span class="text-es">El método más validado para medir el carácter.</span>
+					<span class="text-fr">La méthode la plus validée pour mesurer le caractère.</span>
+				</p>
+				<div class="welcome-stats">
+					<div class="stat-pill">
+						<span class="icon">📋</span>
+						<span>44 
+							<span class="text-en">Items</span>
+							<span class="text-zh">题目</span>
+							<span class="text-it">Elementi</span>
+							<span class="text-ja">項目</span>
+							<span class="text-ko">문항</span>
+							<span class="text-es">Ítems</span>
+							<span class="text-fr">Articles</span>
+						</span>
+					</div>
+					<div class="stat-pill">
+						<span class="icon">⏱️</span>
+						<span>5 
+							<span class="text-en">Mins</span>
+							<span class="text-zh">分钟</span>
+							<span class="text-it">Minuti</span>
+							<span class="text-ja">分</span>
+							<span class="text-ko">분</span>
+							<span class="text-es">Min</span>
+							<span class="text-fr">Min</span>
+						</span>
+					</div>
+				</div>
+				<button id="start-btn" class="btn btn-hero">
+					<span class="text-en">Begin Assessment</span>
+					<span class="text-zh">开始测试</span>
+					<span class="text-it">Inizia</span>
+				</button>
+			</div>
+		</div>
+
+		<!-- Personal Info Screen -->
+		<div id="info-screen" class="screen">
+			<div class="info-card">
+				<h2 class="info-title">
+					<span class="text-en">Final Step: Personal Information</span>
+					<span class="text-zh">最后一步：个人信息</span>
+					<span class="text-it">Ultimo Passo: Informazioni Personali</span>
+				</h2>
+				<p class="info-subtitle">
+					<span class="text-en">Please provide these details to complete the assessment.</span>
+					<span class="text-zh">请提供以下详细信息以完成评估。</span>
+					<span class="text-it">Si prega di fornire questi dettagli per completare la valutazione.</span>
+				</p>
+				
+				<div class="info-form">
+					<div class="form-group">
+						<label>
+							<span class="text-en">Nickname</span><span class="text-zh">昵称</span><span class="text-it">Nickname</span>
+						</label>
+						<input type="text" id="input-nickname" placeholder="e.g. Alex" />
+					</div>
+					<div class="form-group">
+						<label>
+							<span class="text-en">Age</span><span class="text-zh">年龄</span><span class="text-it">Età</span>
+						</label>
+						<input type="number" id="input-age" placeholder="e.g. 25" />
+					</div>
+					<div class="form-group">
+						<label>
+							<span class="text-en">Gender</span><span class="text-zh">性别</span><span class="text-it">Genere</span>
+						</label>
+						<select id="input-gender">
+							<option value="">--</option>
+							<option value="male">Male / 男 / Maschio</option>
+							<option value="female">Female / 女 / Femmina</option>
+							<option value="other">Other / 其他 / Altro</option>
+						</select>
+					</div>
+					<div class="form-group">
+						<label>
+							<span class="text-en">Email</span><span class="text-zh">电子邮箱</span><span class="text-it">Email</span>
+						</label>
+						<input type="email" id="input-email" placeholder="example@mail.com" />
+					</div>
+				</div>
+
+				<button id="final-submit-btn" class="btn btn-hero" style="width: 100%; margin-top: 2rem;">
+					<span class="text-en">Show My Results</span>
+					<span class="text-zh">查看我的结果</span>
+					<span class="text-it">Mostra i Miei Risultati</span>
+				</button>
+			</div>
+		</div>
+
+		<!-- Question Screen -->
+		<div id="question-screen" class="screen">
+			<div class="progress-section">
+				<div class="progress-header">
+					<span class="text-en">Progress</span><span class="text-zh">进度</span><span class="text-it">Progresso</span>
+					<span id="current-num">1</span> / 44
+				</div>
+				<div class="progress-bar-bg"><div id="progress-fill" class="progress-fill"></div></div>
+			</div>
+
+			<div class="question-card">
+				<div class="question-header">
+					<span class="text-en">I am someone who...</span>
+					<span class="text-zh">我是一个...</span>
+					<span class="text-it">Sono una persona che...</span>
+				</div>
+				<h2 class="question-text">
+					<span id="question-en" class="text-en"></span>
+					<span id="question-zh" class="text-zh"></span>
+					<span id="question-ja" class="text-ja"></span>
+					<span id="question-ko" class="text-ko"></span>
+					<span id="question-es" class="text-es"></span>
+					<span id="question-fr" class="text-fr"></span>
+					<span id="question-it" class="text-it"></span>
+				</h2>
+
+				<div id="scales-container" class="scales-list">
+					{scales.map((s) => (
+						<button class="scale-item" data-value={s.value}>
+							<span class="scale-circle">{s.value}</span>
+							<span class="scale-label">
+								<span class="text-en">{s.en}</span>
+								<span class="text-zh">{s.zh}</span>
+								<span class="text-ja">{s.ja}</span>
+								<span class="text-ko">{s.ko}</span>
+								<span class="text-es">{s.es}</span>
+								<span class="text-fr">{s.fr}</span>
+								<span class="text-it">{s.it}</span>
+							</span>
+						</button>
+					))}
+				</div>
+
+				<div class="question-nav">
+					<button id="prev-btn" class="nav-btn secondary" disabled>←</button>
+					<button id="next-btn" class="nav-btn primary" disabled>
+						<span class="text-en">Next Question</span><span class="text-zh">下一题</span><span class="text-it">Prossima</span>
+					</button>
+					<button id="submit-btn" class="nav-btn primary success" style="display:none">
+						<span class="text-en">Finish & Save</span><span class="text-zh">完成并保存</span><span class="text-it">Salva</span>
+					</button>
+				</div>
+			</div>
+		</div>
+
+		<!-- Results Screen -->
+		<div id="results-screen" class="screen results-view">
+			<div class="results-container">
+				<div class="persona-section">
+					<div id="persona-display" class="persona-badge">
+						<span class="text-en">Results for:</span><span class="text-zh">测试结果:</span><span class="text-it">Risultati per:</span>
+						<span id="display-user-id" style="color: var(--accent-teal); font-weight: 800; margin-left: 5px;"></span>
+					</div>
+					<h1 id="persona-name" class="persona-title"></h1>
+				</div>
+
+				<div class="visuals-grid">
+					<div class="chart-box">
+						<svg viewBox="0 0 400 400" class="radar-svg">
+							<circle cx="200" cy="200" r="150" class="radar-grid" />
+							<circle cx="200" cy="200" r="100" class="radar-grid" />
+							<circle cx="200" cy="200" r="50" class="radar-grid" />
+							<polygon id="radar-poly" class="radar-shape" />
+							<g class="radar-labels">
+								<text x="200" y="30">O</text>
+								<text x="370" y="145">C</text>
+								<text x="315" y="350">E</text>
+								<text x="85" y="350">A</text>
+								<text x="30" y="145">N</text>
+							</g>
+						</svg>
+					</div>
+					<div id="traits-display" class="traits-list"></div>
+				</div>
+
+				<div class="actions-footer">
+					<button id="download-csv-btn" class="action-btn primary">📥 <span class="text-en">Download CSV</span><span class="text-zh">下载 CSV</span><span class="text-it">Scarica CSV</span></button>
+					<button id="restart-btn" class="action-btn text"><span class="text-en">Retake</span><span class="text-zh">重测</span><span class="text-it">Rifai</span></button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<script define:vars={{ questions, traitConfig, personas }}>
+		let currentQuestion = 0;
+		let answers = {};
+		let currentLang = 'en';
+		let personalInfo = {
+			nickname: '',
+			age: '',
+			gender: '',
+			email: ''
+		};
+
+		// UI Elements
+		const body = document.body;
+		const langToggle = document.getElementById('lang-toggle');
+		const langMenu = document.getElementById('lang-menu');
+		const langLabel = document.getElementById('current-lang-label');
+		const themeToggle = document.getElementById('theme-toggle');
+		
+		body.setAttribute('data-lang', 'en');
+
+		// Personal Info Inputs
+		const nicknameInput = document.getElementById('input-nickname');
+		const ageInput = document.getElementById('input-age');
+		const genderInput = document.getElementById('input-gender');
+		const emailInput = document.getElementById('input-email');
+
+		// Lang toggle
+		langToggle.addEventListener('click', (e) => {
+			e.stopPropagation();
+			const active = langMenu.classList.toggle('active');
+			langToggle.setAttribute('aria-expanded', active);
+		});
+
+		document.addEventListener('click', (e) => {
+			if (!langToggle.contains(e.target)) {
+				langMenu.classList.remove('active');
+				langToggle.setAttribute('aria-expanded', 'false');
+			}
+		});
+
+		document.querySelectorAll('[data-lang-set]').forEach(item => {
+			item.addEventListener('click', (e) => {
+				const lang = e.target.dataset.langSet;
+				currentLang = lang;
+				body.setAttribute('data-lang', lang);
+				langLabel.textContent = lang.toUpperCase();
+				updateQuestion(); 
+			});
+		});
+
+		themeToggle.addEventListener('click', () => {
+			const current = document.documentElement.getAttribute('data-theme');
+			document.documentElement.setAttribute('data-theme', current === 'dark' ? 'light' : 'dark');
+		});
+
+		function showScreen(id) {
+			document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+			document.getElementById(id).classList.add('active');
+			window.scrollTo(0, 0);
+		}
+
+		function updateQuestion() {
+			const q = questions[currentQuestion];
+			['en', 'zh', 'ja', 'ko', 'es', 'fr', 'it'].forEach(l => {
+				const el = document.getElementById(`question-${l}`);
+				if (el) el.textContent = q[l] || q.en;
+			});
+			
+			document.getElementById('current-num').textContent = currentQuestion + 1;
+			document.getElementById('progress-fill').style.width = `${((currentQuestion + 1) / 44) * 100}%`;
+			
+			const nextBtn = document.getElementById('next-btn');
+			const submitBtn = document.getElementById('submit-btn');
+			const prevBtn = document.getElementById('prev-btn');
+			
+			prevBtn.disabled = currentQuestion === 0;
+			const answered = answers[currentQuestion] !== undefined;
+			nextBtn.disabled = !answered;
+			submitBtn.disabled = !answered;
+
+			if (currentQuestion === 43) {
+				nextBtn.style.display = 'none';
+				submitBtn.style.display = 'block';
+			} else {
+				nextBtn.style.display = 'block';
+				submitBtn.style.display = 'none';
+			}
+
+			document.querySelectorAll('.scale-item').forEach(btn => {
+				btn.classList.toggle('selected', parseInt(btn.dataset.value) === answers[currentQuestion]);
+			});
+		}
+
+		document.getElementById('start-btn').addEventListener('click', () => {
+			showScreen('question-screen');
+			updateQuestion();
+		});
+
+		document.getElementById('scales-container').addEventListener('click', (e) => {
+			const btn = e.target.closest('.scale-item');
+			if (btn) {
+				answers[currentQuestion] = parseInt(btn.dataset.value);
+				updateQuestion();
+			}
+		});
+
+		document.getElementById('prev-btn').addEventListener('click', () => {
+			if (currentQuestion > 0) { currentQuestion--; updateQuestion(); }
+		});
+
+		document.getElementById('next-btn').addEventListener('click', () => {
+			if (currentQuestion < 43) { currentQuestion++; updateQuestion(); }
+		});
+
+		document.getElementById('submit-btn').addEventListener('click', () => {
+			showScreen('info-screen');
+		});
+
+		document.getElementById('final-submit-btn').addEventListener('click', () => {
+			console.log('Final submit clicked');
+			try {
+				personalInfo = {
+					nickname: nicknameInput.value.trim() || 'Guest',
+					age: ageInput.value.trim() || 'N/A',
+					gender: genderInput.value || 'N/A',
+					email: emailInput.value.trim() || 'N/A'
+				};
+				console.log('Personal info saved:', personalInfo);
+				
+				const scores = calculate();
+				console.log('Scores calculated:', scores);
+				
+				display(scores);
+				console.log('Display updated');
+				
+				showScreen('results-screen');
+				console.log('Results screen shown');
+			} catch (err) {
+				console.error('Error in final submit:', err);
+				alert('There was an error calculating your results. Please try again.');
+			}
+		});
+
+		document.getElementById('restart-btn').addEventListener('click', () => {
+			currentQuestion = 0;
+			answers = {};
+			// Clear inputs
+			nicknameInput.value = '';
+			ageInput.value = '';
+			genderInput.value = '';
+			emailInput.value = '';
+			showScreen('welcome-screen');
+		});
+
+		function calculate() {
+			const res = {};
+			for (const [k, v] of Object.entries(traitConfig)) {
+				let s = 0, c = 0;
+				v.forward.forEach(i => { if(answers[i]){ s += answers[i]; c++; }});
+				v.reverse.forEach(i => { if(answers[i]){ s += (6-answers[i]); c++; }});
+				res[k] = { percent: ((s/c - 1) / 4) * 100 };
+			}
+			return res;
+		}
+
+		function display(scores) {
+			document.getElementById('display-user-id').textContent = personalInfo.nickname;
+			const traits = ['O', 'C', 'E', 'A', 'N'];
+			const pts = traits.map((t, i) => {
+				const a = (i * 2 * Math.PI / 5) - Math.PI / 2;
+				const r = (scores[t].percent / 100) * 150;
+				return `${200 + r * Math.cos(a)},${200 + r * Math.sin(a)}`;
+			});
+			document.getElementById('radar-poly').setAttribute('points', pts.join(' '));
+
+			const map = Object.fromEntries(Object.entries(scores).map(([k,v]) => [k, v.percent]));
+			const p = personas.find(x => x.criteria(map)) || personas[personas.length-1];
+			
+			const nameEl = document.getElementById('persona-name');
+			nameEl.innerHTML = `
+				<span class="text-en">${p.name.en}</span>
+				<span class="text-zh">${p.name.zh}</span>
+				<span class="text-it">${p.name.it}</span>
+			`;
+
+			const list = document.getElementById('traits-display');
+			list.innerHTML = traits.map(t => `
+				<div class="trait-row" style="--c: ${traitConfig[t].color}">
+					<div class="trait-info">
+						<span>${traitConfig[t].icon} ${traitConfig[t].name}</span>
+						<span>${scores[t].percent.toFixed(0)}%</span>
+					</div>
+					<div class="trait-bar"><div style="width:${scores[t].percent}%"></div></div>
+				</div>
+			`).join('');
+		}
+
+		// CSV Download
+		document.getElementById('download-csv-btn').addEventListener('click', () => {
+			const timestamp = new Date().toISOString();
+			const headers = ['Nickname', 'Age', 'Gender', 'Email', ...Array.from({length: 44}, (_, i) => `Q${i+1}`), 'Timestamp'];
+			const data = [
+				personalInfo.nickname, 
+				personalInfo.age, 
+				personalInfo.gender, 
+				personalInfo.email,
+				...Array.from({length: 44}, (_, i) => answers[i] || ''), 
+				timestamp
+			];
+			const csv = headers.join(',') + '\n' + data.join(',');
+			const blob = new Blob([csv], { type: 'text/csv' });
+			const url = URL.createObjectURL(blob);
+			const a = document.createElement('a');
+			a.href = url;
+			a.download = `bfi_results_${personalInfo.nickname}.csv`;
+			a.click();
+		});
+	</script>
 </Layout>
+
+<style>
+	/* Header */
+	.app-header {
+		position: fixed;
+		top: 0; left: 0; right: 0;
+		padding: 0.75rem 1.5rem;
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		z-index: 1000;
+		background: rgba(var(--bg-primary), 0.8);
+		backdrop-filter: blur(10px);
+	}
+
+	.logo { font-weight: 800; font-size: 1.1rem; }
+	.header-controls { display: flex; gap: 0.5rem; }
+	.control-btn {
+		background: var(--bg-card);
+		border: 1px solid var(--border-subtle);
+		padding: 0.4rem 0.8rem;
+		border-radius: 10px;
+		color: var(--text-primary);
+		cursor: pointer;
+		font-weight: 600;
+		font-size: 0.9rem;
+	}
+
+	/* Language Dropdown */
+	.lang-dropdown { position: relative; }
+	.dropdown-menu {
+		position: absolute;
+		top: 100%; right: 0;
+		background: var(--bg-card);
+		border: 1px solid var(--border-subtle);
+		border-radius: 12px;
+		padding: 0.5rem;
+		display: none;
+		grid-template-columns: 1fr;
+		min-width: 160px;
+		margin-top: 0.5rem;
+		box-shadow: var(--shadow-glow);
+	}
+	.dropdown-menu.active { display: grid; }
+	.menu-item { padding: 0.6rem 1rem; border: none; background: none; color: var(--text-primary); text-align: left; cursor: pointer; border-radius: 8px; font-size: 0.95rem; }
+	.menu-item:hover { background: var(--accent-teal-dim); }
+
+	/* Main Container */
+	.container {
+		min-height: 100vh;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		padding: 5rem 1rem 2rem;
+	}
+
+	.screen {
+		display: none;
+		width: 100%;
+		animation: fadeIn 0.4s ease;
+	}
+	.screen.active { display: block; }
+
+	@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+	/* Welcome Screen */
+	.full-screen-welcome { max-width: 1000px; text-align: center; width: 100%; }
+	.welcome-content { padding: 2rem; display: flex; flex-direction: column; align-items: center; }
+	.welcome-badge { background: var(--accent-teal-dim); color: var(--accent-teal); padding: 0.4rem 1.2rem; border-radius: 100px; display: inline-block; font-weight: 700; font-size: 0.8rem; margin-bottom: 1.5rem; }
+	.welcome-title { font-size: clamp(2rem, 6vw, 3.5rem); font-weight: 800; margin-bottom: 1rem; line-height: 1.1; }
+	.welcome-subtitle { font-size: 1.2rem; color: var(--text-secondary); max-width: 800px; margin: 0 auto 2rem; line-height: 1.5; }
+	.welcome-stats { display: flex; justify-content: center; gap: 1rem; margin-bottom: 2rem; }
+	.stat-pill { background: var(--bg-card); border: 1px solid var(--border-subtle); padding: 0.5rem 1rem; border-radius: 15px; display: flex; align-items: center; gap: 0.5rem; font-weight: 700; font-size: 0.9rem; }
+	.btn-hero { background: var(--accent-teal); color: var(--bg-primary); padding: 1.2rem 3rem; font-size: 1.3rem; font-weight: 800; border-radius: 20px; border: none; cursor: pointer; transition: transform 0.2s; box-shadow: 0 5px 15px var(--accent-teal-dim); }
+	.btn-hero:hover { transform: translateY(-2px); }
+	
+	/* Info Screen */
+	.info-card {
+		background: var(--bg-card);
+		padding: 2.5rem 3rem;
+		border-radius: 32px;
+		border: 1px solid var(--border-subtle);
+		max-width: 600px;
+		margin: 0 auto;
+		text-align: center;
+	}
+	.info-title { font-size: 2rem; margin-bottom: 1rem; }
+	.info-subtitle { color: var(--text-muted); margin-bottom: 2.5rem; }
+	.info-form { display: grid; gap: 1.5rem; text-align: left; }
+	.form-group { display: flex; flex-direction: column; gap: 0.5rem; }
+	.form-group label { font-weight: 700; font-size: 0.9rem; color: var(--text-secondary); }
+	.form-group input, .form-group select {
+		background: var(--bg-secondary);
+		border: 1px solid var(--border-subtle);
+		padding: 0.8rem 1rem;
+		border-radius: 12px;
+		color: var(--text-primary);
+		font-size: 1rem;
+	}
+	.form-group input:focus { border-color: var(--accent-teal); outline: none; }
+
+	/* Question Section - Optimized for vertical height */
+	#question-screen { max-width: 800px; }
+	.progress-section { margin-bottom: 1.5rem; }
+	.progress-header { display: flex; justify-content: space-between; font-weight: 700; margin-bottom: 0.5rem; font-size: 1rem; }
+	.progress-bar-bg { height: 8px; background: var(--bg-card); border-radius: 10px; overflow: hidden; }
+	.progress-fill { height: 100%; background: var(--accent-teal); width: 0%; transition: width 0.3s; }
+
+	.question-card {
+		background: var(--bg-card);
+		padding: 2.5rem 3rem;
+		border-radius: 32px;
+		border: 1px solid var(--border-subtle);
+	}
+
+	.question-header { font-size: 1rem; color: var(--text-muted); font-style: italic; margin-bottom: 1rem; }
+	.question-text { font-size: clamp(1.5rem, 3.5vw, 2.4rem); font-weight: 700; margin-bottom: 2rem; line-height: 1.2; min-height: 3em; display: flex; align-items: center; }
+
+	.scales-list { display: grid; gap: 0.75rem; margin-bottom: 2rem; }
+	.scale-item {
+		display: flex;
+		align-items: center;
+		gap: 1.5rem;
+		padding: 1rem 1.75rem;
+		background: var(--bg-secondary);
+		border: 2px solid transparent;
+		border-radius: 18px;
+		cursor: pointer;
+		color: var(--text-primary);
+		text-align: left;
+		transition: all 0.2s;
+	}
+	.scale-item:hover { background: var(--border-subtle); }
+	.scale-item.selected { border-color: var(--accent-teal); background: var(--accent-teal-dim); }
+	.scale-circle { width: 40px; height: 40px; background: var(--bg-card); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 1.2rem; flex-shrink: 0; }
+	.scale-label { font-size: 1.3rem; font-weight: 600; }
+
+	.question-nav { display: flex; gap: 1rem; }
+	.nav-btn { flex: 1; padding: 1.2rem; border-radius: 18px; font-weight: 800; border: none; cursor: pointer; font-size: 1.2rem; }
+	.nav-btn.primary { background: var(--accent-teal); color: var(--bg-primary); }
+	.nav-btn.secondary { background: var(--bg-card); color: var(--text-primary); max-width: 80px; border: 1px solid var(--border-subtle); }
+	.nav-btn:disabled { opacity: 0.3; }
+
+	/* Results */
+	.results-view { max-width: 900px; }
+	.results-container { background: var(--bg-card); padding: 3rem; border-radius: 40px; text-align: center; }
+	.persona-title { font-size: 2.8rem; margin-bottom: 3rem; }
+	.visuals-grid { display: grid; grid-template-columns: 1fr 1.2fr; gap: 2rem; align-items: center; margin-bottom: 3rem; }
+	.radar-svg { width: 100%; max-width: 350px; }
+	.radar-grid { fill: none; stroke: var(--border-subtle); stroke-width: 1; }
+	.radar-shape { fill: var(--accent-teal-dim); stroke: var(--accent-teal); stroke-width: 3; }
+	.radar-labels text { fill: var(--text-muted); font-weight: 700; font-size: 16px; text-anchor: middle; }
+	.traits-list { display: grid; gap: 1rem; text-align: left; }
+	.trait-row { background: var(--bg-secondary); padding: 1.2rem; border-radius: 16px; border-left: 5px solid var(--c); }
+	.trait-info { display: flex; justify-content: space-between; font-weight: 800; margin-bottom: 0.5rem; }
+	.trait-bar { height: 6px; background: var(--bg-card); border-radius: 10px; overflow: hidden; }
+	.trait-bar div { height: 100%; background: var(--c); }
+	.actions-footer { display: flex; gap: 1rem; justify-content: center; }
+	.action-btn { padding: 1rem 2rem; border-radius: 16px; font-weight: 700; border: none; cursor: pointer; }
+	.action-btn.primary { background: var(--accent-teal); color: var(--bg-primary); }
+	.action-btn.text { background: none; color: var(--text-muted); text-decoration: underline; }
+
+	/* Mobile */
+	@media (max-width: 800px) {
+		.container { padding-top: 4rem; }
+		.question-card { padding: 1.5rem; }
+		.question-text { font-size: 1.5rem; margin-bottom: 1.5rem; }
+		.scale-item { padding: 0.8rem 1.2rem; gap: 1rem; }
+		.scale-label { font-size: 1.1rem; }
+		.visuals-grid { grid-template-columns: 1fr; }
+	}
+</style>
