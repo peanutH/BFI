@@ -60,6 +60,11 @@ const traitConfig = {
 	O: {
 		name: "Openness",
 		fullName: { en: "Openness", zh: "开放性", ja: "開放性", ko: "개방성", es: "Apertura", fr: "Ouverture", it: "Apertura" },
+		summary: { 
+			en: "Curious, creative, and open to new experiences. 🎨✨", 
+			zh: "好奇心强，富有创造力，乐于接受新事物。🎨✨", 
+			it: "Curioso, creativo e aperto a nuove esperienze. 🎨✨" 
+		},
 		color: "#a855f7",
 		icon: "🎨",
 		forward: [4, 9, 14, 19, 24, 29, 39, 43],
@@ -68,6 +73,11 @@ const traitConfig = {
 	C: {
 		name: "Conscientiousness",
 		fullName: { en: "Conscientiousness", zh: "尽责性", ja: "誠実性", ko: "성실성", es: "Responsabilidad", fr: "Conscience", it: "Coscienziosità" },
+		summary: { 
+			en: "Organized, dependable, and very disciplined. 📋🎯", 
+			zh: "做事有条理，可靠，纪律性强。📋🎯", 
+			it: "Organizzato, affidabile e molto disciplinato. 📋🎯" 
+		},
 		color: "#3b82f6",
 		icon: "📋",
 		forward: [2, 12, 27, 32, 37],
@@ -76,6 +86,11 @@ const traitConfig = {
 	E: {
 		name: "Extraversion",
 		fullName: { en: "Extraversion", zh: "外向性", ja: "外向性", ko: "외향성", es: "Extraversión", fr: "Extraversion", it: "Estroversione" },
+		summary: { 
+			en: "Outgoing, energetic, and loves being social. ⚡🎉", 
+			zh: "外向，精力充沛，热爱社交。⚡🎉", 
+			it: "Socievole, energico e ama la vita sociale. ⚡🎉" 
+		},
 		color: "#f59e0b",
 		icon: "⚡",
 		forward: [0, 10, 15, 25, 35],
@@ -84,6 +99,11 @@ const traitConfig = {
 	A: {
 		name: "Agreeableness",
 		fullName: { en: "Agreeableness", zh: "宜人性", ja: "協調性", ko: "우호성", es: "Amabilidad", fr: "Agréabilité", it: "Gradevolezza" },
+		summary: { 
+			en: "Kind, cooperative, and compassionate. 🤝❤️", 
+			zh: "友善，乐于合作，富有同情心。🤝❤️", 
+			it: "Gentile, cooperativo e compassionevole. 🤝❤️" 
+		},
 		color: "#10b981",
 		icon: "🤝",
 		forward: [6, 16, 21, 31, 41],
@@ -92,19 +112,17 @@ const traitConfig = {
 	N: {
 		name: "Neuroticism",
 		fullName: { en: "Neuroticism", zh: "神经质", ja: "神経症的傾向", ko: "신경증", es: "Neuroticismo", fr: "Névrosisme", it: "Nevroticismo" },
+		summary: { 
+			en: "Sensitive to stress and emotional changes. 🌊🍃", 
+			zh: "对压力和情绪变化较为敏感。🌊🍃", 
+			it: "Sensibile allo stress e ai cambiamenti emotivi. 🌊🍃" 
+		},
 		color: "#ef4444",
 		icon: "🌊",
 		forward: [3, 13, 18, 28, 38],
 		reverse: [8, 23, 33]
 	}
 };
-
-const personas = [
-	{ id: "explorer", name: { en: "The Adventurous Explorer", zh: "冒险探索者", ja: "冒険好きな探検家", ko: "모험적인 탐험가", es: "El Explorador Aventurero", fr: "L'Explorateur Aventureux", it: "L'Esploratore Avventuroso" }, criteria: (s) => s.O >= 70 && s.E >= 60 },
-	{ id: "architect", name: { en: "The Disciplined Architect", zh: "严谨建筑师", ja: "規律正しい建築家", ko: "훈련된 건축가", es: "El Arquitecto Disciplinado", fr: "L'Architecte Discipliné", it: "L'Architetto Disciplinato" }, criteria: (s) => s.C >= 75 && s.O >= 60 },
-	{ id: "caregiver", name: { en: "The Compassionate Caregiver", zh: "慈悲关怀者", ja: "慈悲深い介護者", ko: "자비로운 보살핌이", es: "El Cuidador Compasivo", fr: "Le Soignant Compatissant", it: "Il Caregiver Compassionevole" }, criteria: (s) => s.A >= 75 && s.C >= 60 },
-	{ id: "default", name: { en: "The Balanced Soul", zh: "平衡之魂", ja: "バランスの取れた魂", ko: "균형 잡힌 영혼", es: "El Alma Equilibrada", fr: "L'Âme Équilibrée", it: "L'Anima Equilibrata" }, criteria: () => true }
-];
 ---
 
 <Layout>
@@ -206,60 +224,6 @@ const personas = [
 			</div>
 		</div>
 
-		<!-- Personal Info Screen -->
-		<div id="info-screen" class="screen">
-			<div class="info-card">
-				<h2 class="info-title">
-					<span class="text-en">Final Step: Personal Information</span>
-					<span class="text-zh">最后一步：个人信息</span>
-					<span class="text-it">Ultimo Passo: Informazioni Personali</span>
-				</h2>
-				<p class="info-subtitle">
-					<span class="text-en">Please provide these details to complete the assessment.</span>
-					<span class="text-zh">请提供以下详细信息以完成评估。</span>
-					<span class="text-it">Si prega di fornire questi dettagli per completare la valutazione.</span>
-				</p>
-				
-				<div class="info-form">
-					<div class="form-group">
-						<label>
-							<span class="text-en">Nickname</span><span class="text-zh">昵称</span><span class="text-it">Nickname</span>
-						</label>
-						<input type="text" id="input-nickname" placeholder="e.g. Alex" />
-					</div>
-					<div class="form-group">
-						<label>
-							<span class="text-en">Age</span><span class="text-zh">年龄</span><span class="text-it">Età</span>
-						</label>
-						<input type="number" id="input-age" placeholder="e.g. 25" />
-					</div>
-					<div class="form-group">
-						<label>
-							<span class="text-en">Gender</span><span class="text-zh">性别</span><span class="text-it">Genere</span>
-						</label>
-						<select id="input-gender">
-							<option value="">--</option>
-							<option value="male">Male / 男 / Maschio</option>
-							<option value="female">Female / 女 / Femmina</option>
-							<option value="other">Other / 其他 / Altro</option>
-						</select>
-					</div>
-					<div class="form-group">
-						<label>
-							<span class="text-en">Email</span><span class="text-zh">电子邮箱</span><span class="text-it">Email</span>
-						</label>
-						<input type="email" id="input-email" placeholder="example@mail.com" />
-					</div>
-				</div>
-
-				<button id="final-submit-btn" class="btn btn-hero" style="width: 100%; margin-top: 2rem;">
-					<span class="text-en">Show My Results</span>
-					<span class="text-zh">查看我的结果</span>
-					<span class="text-it">Mostra i Miei Risultati</span>
-				</button>
-			</div>
-		</div>
-
 		<!-- Question Screen -->
 		<div id="question-screen" class="screen">
 			<div class="progress-section">
@@ -309,7 +273,7 @@ const personas = [
 						<span class="text-en">Next Question</span><span class="text-zh">下一题</span><span class="text-it">Prossima</span>
 					</button>
 					<button id="submit-btn" class="nav-btn primary success" style="display:none">
-						<span class="text-en">Finish & Save</span><span class="text-zh">完成并保存</span><span class="text-it">Salva</span>
+						<span class="text-en">Show My Results</span><span class="text-zh">查看我的结果</span><span class="text-it">Mostra Risultati</span>
 					</button>
 				</div>
 			</div>
@@ -320,8 +284,7 @@ const personas = [
 			<div class="results-container">
 				<div class="persona-section">
 					<div id="persona-display" class="persona-badge">
-						<span class="text-en">Results for:</span><span class="text-zh">测试结果:</span><span class="text-it">Risultati per:</span>
-						<span id="display-user-id" style="color: var(--accent-teal); font-weight: 800; margin-left: 5px;"></span>
+						<span class="text-en">Your Persona</span><span class="text-zh">您的角色</span><span class="text-it">La Tua Persona</span>
 					</div>
 					<h1 id="persona-name" class="persona-title"></h1>
 				</div>
@@ -345,24 +308,33 @@ const personas = [
 					<div id="traits-display" class="traits-list"></div>
 				</div>
 
-				<div class="actions-footer">
-					<button id="download-csv-btn" class="action-btn primary">📥 <span class="text-en">Download CSV</span><span class="text-zh">下载 CSV</span><span class="text-it">Scarica CSV</span></button>
-					<button id="restart-btn" class="action-btn text"><span class="text-en">Retake</span><span class="text-zh">重测</span><span class="text-it">Rifai</span></button>
+				<div class="save-prompt" style="margin-top: 2rem; margin-bottom: 1rem; border-top: 1px solid var(--border-subtle); padding-top: 2rem;">
+					<p style="font-weight: 700; color: var(--text-secondary); margin-bottom: 1.5rem;">
+						<span class="text-en">Would you like to save your result summary as a PDF or Image?</span>
+						<span class="text-zh">您想将结果摘要保存为 PDF 或图片吗？</span>
+						<span class="text-it">Vuoi salvare il riepilogo dei risultati come PDF o Immagine?</span>
+					</p>
+					<div class="actions-footer">
+						<button id="save-pdf-btn" class="action-btn primary">📄 <span class="text-en">Save as PDF / Image</span><span class="text-zh">保存为 PDF / 图片</span><span class="text-it">Salva come PDF / Immagine</span></button>
+						<button id="share-results-btn" class="action-btn secondary">📤 <span class="text-en">Share</span><span class="text-zh">分享</span><span class="text-it">Condividi</span></button>
+						<button id="restart-btn" class="action-btn text"><span class="text-en">Retake</span><span class="text-zh">重测</span><span class="text-it">Rifai</span></button>
+					</div>
 				</div>
 			</div>
 		</div>
 	</div>
 
-	<script define:vars={{ questions, traitConfig, personas }}>
+	<script define:vars={{ questions, traitConfig }}>
+		const personas = [
+			{ id: "explorer", name: { en: "The Adventurous Explorer 🦊", zh: "冒险探索者 🦊", ja: "冒険好きな探検家 🦊", ko: "모험적인 탐험가 🦊", es: "El Explorador Aventurero 🦊", fr: "L'Explorateur Aventureux 🦊", it: "L'Esploratore Avventuroso 🦊" }, criteria: (s) => s.O >= 70 && s.E >= 60 },
+			{ id: "architect", name: { en: "The Disciplined Architect 🦁", zh: "严谨建筑师 🦁", ja: "規律正しい建築家 🦁", ko: "훈련된 건축가 🦁", es: "El Arquitecto Disciplinado 🦁", fr: "L'Architecte Discipliné 🦁", it: "L'Architetto Disciplinato 🦁" }, criteria: (s) => s.C >= 75 && s.O >= 60 },
+			{ id: "caregiver", name: { en: "The Compassionate Caregiver 🐰", zh: "慈悲关怀者 🐰", ja: "慈悲深い介護者 🐰", ko: "자비로운 보살핌이 🐰", es: "El Cuidador Compasivo 🐰", fr: "Le Soignant Compatissant 🐰", it: "Il Caregiver Compassionevole 🐰" }, criteria: (s) => s.A >= 75 && s.C >= 60 },
+			{ id: "default", name: { en: "The Balanced Soul 🐧", zh: "平衡之魂 🐧", ja: "バランスの取れた魂 🐧", ko: "균형 잡힌 영혼 🐧", es: "El Alma Equilibrata 🐧", fr: "L'Âme Équilibrée 🐧", it: "L'Anima Equilibrata 🐧" }, criteria: () => true }
+		];
+
 		let currentQuestion = 0;
 		let answers = {};
 		let currentLang = 'en';
-		let personalInfo = {
-			nickname: '',
-			age: '',
-			gender: '',
-			email: ''
-		};
 
 		// UI Elements
 		const body = document.body;
@@ -372,12 +344,6 @@ const personas = [
 		const themeToggle = document.getElementById('theme-toggle');
 		
 		body.setAttribute('data-lang', 'en');
-
-		// Personal Info Inputs
-		const nicknameInput = document.getElementById('input-nickname');
-		const ageInput = document.getElementById('input-age');
-		const genderInput = document.getElementById('input-gender');
-		const emailInput = document.getElementById('input-email');
 
 		// Lang toggle
 		langToggle.addEventListener('click', (e) => {
@@ -455,7 +421,26 @@ const personas = [
 			const btn = e.target.closest('.scale-item');
 			if (btn) {
 				answers[currentQuestion] = parseInt(btn.dataset.value);
-				updateQuestion();
+				
+				// If it's the last question, show results directly
+				if (currentQuestion === 43) {
+					console.log('Last question answered, showing results directly');
+					try {
+						const scores = calculate();
+						localStorage.setItem('bfi_latest_results', JSON.stringify({
+							answers,
+							scores,
+							timestamp: new Date().toISOString()
+						}));
+						display(scores);
+						showScreen('results-screen');
+					} catch (err) {
+						console.error('Error calculating results:', err);
+						alert('There was an error calculating your results.');
+					}
+				} else {
+					updateQuestion();
+				}
 			}
 		});
 
@@ -468,30 +453,25 @@ const personas = [
 		});
 
 		document.getElementById('submit-btn').addEventListener('click', () => {
-			showScreen('info-screen');
-		});
-
-		document.getElementById('final-submit-btn').addEventListener('click', () => {
-			console.log('Final submit clicked');
+			console.log('Submit clicked');
 			try {
-				personalInfo = {
-					nickname: nicknameInput.value.trim() || 'Guest',
-					age: ageInput.value.trim() || 'N/A',
-					gender: genderInput.value || 'N/A',
-					email: emailInput.value.trim() || 'N/A'
-				};
-				console.log('Personal info saved:', personalInfo);
-				
 				const scores = calculate();
 				console.log('Scores calculated:', scores);
 				
+				// Save to local storage
+				localStorage.setItem('bfi_latest_results', JSON.stringify({
+					answers,
+					scores,
+					timestamp: new Date().toISOString()
+				}));
+
 				display(scores);
 				console.log('Display updated');
 				
 				showScreen('results-screen');
 				console.log('Results screen shown');
 			} catch (err) {
-				console.error('Error in final submit:', err);
+				console.error('Error calculating results:', err);
 				alert('There was an error calculating your results. Please try again.');
 			}
 		});
@@ -499,11 +479,6 @@ const personas = [
 		document.getElementById('restart-btn').addEventListener('click', () => {
 			currentQuestion = 0;
 			answers = {};
-			// Clear inputs
-			nicknameInput.value = '';
-			ageInput.value = '';
-			genderInput.value = '';
-			emailInput.value = '';
 			showScreen('welcome-screen');
 		});
 
@@ -511,64 +486,112 @@ const personas = [
 			const res = {};
 			for (const [k, v] of Object.entries(traitConfig)) {
 				let s = 0, c = 0;
-				v.forward.forEach(i => { if(answers[i]){ s += answers[i]; c++; }});
-				v.reverse.forEach(i => { if(answers[i]){ s += (6-answers[i]); c++; }});
-				res[k] = { percent: ((s/c - 1) / 4) * 100 };
+				v.forward.forEach(i => { 
+					if(answers[i] !== undefined){ 
+						s += answers[i]; 
+						c++; 
+					}
+				});
+				v.reverse.forEach(i => { 
+					if(answers[i] !== undefined){ 
+						s += (6 - answers[i]); 
+						c++; 
+					}
+				});
+				// Prevent division by zero
+				if (c === 0) {
+					res[k] = { percent: 50 }; // Default to middle if no answers
+				} else {
+					res[k] = { percent: Math.max(0, Math.min(100, ((s/c - 1) / 4) * 100)) };
+				}
 			}
 			return res;
 		}
 
 		function display(scores) {
-			document.getElementById('display-user-id').textContent = personalInfo.nickname;
 			const traits = ['O', 'C', 'E', 'A', 'N'];
+			
+			// Calculate radar points
 			const pts = traits.map((t, i) => {
 				const a = (i * 2 * Math.PI / 5) - Math.PI / 2;
-				const r = (scores[t].percent / 100) * 150;
+				const percent = scores[t] && !isNaN(scores[t].percent) ? scores[t].percent : 50;
+				const r = (percent / 100) * 150;
 				return `${200 + r * Math.cos(a)},${200 + r * Math.sin(a)}`;
 			});
-			document.getElementById('radar-poly').setAttribute('points', pts.join(' '));
+			
+			const radarPoly = document.getElementById('radar-poly');
+			if (radarPoly) {
+				radarPoly.setAttribute('points', pts.join(' '));
+			}
 
-			const map = Object.fromEntries(Object.entries(scores).map(([k,v]) => [k, v.percent]));
+			const map = Object.fromEntries(Object.entries(scores).map(([k,v]) => [k, v.percent || 50]));
 			const p = personas.find(x => x.criteria(map)) || personas[personas.length-1];
 			
 			const nameEl = document.getElementById('persona-name');
-			nameEl.innerHTML = `
-				<span class="text-en">${p.name.en}</span>
-				<span class="text-zh">${p.name.zh}</span>
-				<span class="text-it">${p.name.it}</span>
-			`;
+			if (nameEl) {
+				nameEl.innerHTML = `
+					<span class="text-en">${p.name.en}</span>
+					<span class="text-zh">${p.name.zh}</span>
+					<span class="text-it">${p.name.it}</span>
+				`;
+			}
 
 			const list = document.getElementById('traits-display');
-			list.innerHTML = traits.map(t => `
-				<div class="trait-row" style="--c: ${traitConfig[t].color}">
-					<div class="trait-info">
-						<span>${traitConfig[t].icon} ${traitConfig[t].name}</span>
-						<span>${scores[t].percent.toFixed(0)}%</span>
-					</div>
-					<div class="trait-bar"><div style="width:${scores[t].percent}%"></div></div>
-				</div>
-			`).join('');
+			if (list) {
+				list.innerHTML = traits.map(t => {
+					const percent = scores[t] && !isNaN(scores[t].percent) ? scores[t].percent : 50;
+					const config = traitConfig[t];
+					return `
+						<div class="trait-row" style="--c: ${config.color}">
+							<div class="trait-info">
+								<span>${config.icon} ${config.fullName[currentLang] || config.fullName.en}</span>
+								<span>${percent.toFixed(0)}%</span>
+							</div>
+							<div class="trait-bar"><div style="width:${percent}%"></div></div>
+							<div class="trait-summary" style="margin-top: 0.5rem; font-size: 0.85rem; color: var(--text-secondary); line-height: 1.4;">
+								${config.summary[currentLang] || config.summary.en}
+							</div>
+						</div>
+					`;
+				}).join('');
+			}
 		}
 
-		// CSV Download
-		document.getElementById('download-csv-btn').addEventListener('click', () => {
-			const timestamp = new Date().toISOString();
-			const headers = ['Nickname', 'Age', 'Gender', 'Email', ...Array.from({length: 44}, (_, i) => `Q${i+1}`), 'Timestamp'];
-			const data = [
-				personalInfo.nickname, 
-				personalInfo.age, 
-				personalInfo.gender, 
-				personalInfo.email,
-				...Array.from({length: 44}, (_, i) => answers[i] || ''), 
-				timestamp
-			];
-			const csv = headers.join(',') + '\n' + data.join(',');
-			const blob = new Blob([csv], { type: 'text/csv' });
-			const url = URL.createObjectURL(blob);
-			const a = document.createElement('a');
-			a.href = url;
-			a.download = `bfi_results_${personalInfo.nickname}.csv`;
-			a.click();
+		// PDF Save
+		document.getElementById('save-pdf-btn').addEventListener('click', () => {
+			window.print();
+		});
+
+		// Share Results
+		document.getElementById('share-results-btn').addEventListener('click', async () => {
+			const scores = calculate();
+			const traits = ['O', 'C', 'E', 'A', 'N'];
+			let shareText = "My Big Five Personality Test Results:\n\n";
+			
+			traits.forEach(t => {
+				const percent = scores[t] && !isNaN(scores[t].percent) ? scores[t].percent : 50;
+				shareText += `${traitConfig[t].name}: ${percent.toFixed(0)}%\n`;
+			});
+			
+			if (navigator.share) {
+				try {
+					await navigator.share({
+						title: 'My BFI-44 Personality Results',
+						text: shareText,
+						url: window.location.href
+					});
+				} catch (err) {
+					console.log('Share failed:', err);
+				}
+			} else {
+				// Fallback: Copy to clipboard
+				try {
+					await navigator.clipboard.writeText(shareText);
+					alert('Results copied to clipboard!');
+				} catch (err) {
+					alert('Could not share results.');
+				}
+			}
 		});
 	</script>
 </Layout>
@@ -648,31 +671,6 @@ const personas = [
 	.btn-hero { background: var(--accent-teal); color: var(--bg-primary); padding: 1.2rem 3rem; font-size: 1.3rem; font-weight: 800; border-radius: 20px; border: none; cursor: pointer; transition: transform 0.2s; box-shadow: 0 5px 15px var(--accent-teal-dim); }
 	.btn-hero:hover { transform: translateY(-2px); }
 	
-	/* Info Screen */
-	.info-card {
-		background: var(--bg-card);
-		padding: 2.5rem 3rem;
-		border-radius: 32px;
-		border: 1px solid var(--border-subtle);
-		max-width: 600px;
-		margin: 0 auto;
-		text-align: center;
-	}
-	.info-title { font-size: 2rem; margin-bottom: 1rem; }
-	.info-subtitle { color: var(--text-muted); margin-bottom: 2.5rem; }
-	.info-form { display: grid; gap: 1.5rem; text-align: left; }
-	.form-group { display: flex; flex-direction: column; gap: 0.5rem; }
-	.form-group label { font-weight: 700; font-size: 0.9rem; color: var(--text-secondary); }
-	.form-group input, .form-group select {
-		background: var(--bg-secondary);
-		border: 1px solid var(--border-subtle);
-		padding: 0.8rem 1rem;
-		border-radius: 12px;
-		color: var(--text-primary);
-		font-size: 1rem;
-	}
-	.form-group input:focus { border-color: var(--accent-teal); outline: none; }
-
 	/* Question Section - Optimized for vertical height */
 	#question-screen { max-width: 800px; }
 	.progress-section { margin-bottom: 1.5rem; }
@@ -730,8 +728,11 @@ const personas = [
 	.trait-bar { height: 6px; background: var(--bg-card); border-radius: 10px; overflow: hidden; }
 	.trait-bar div { height: 100%; background: var(--c); }
 	.actions-footer { display: flex; gap: 1rem; justify-content: center; }
-	.action-btn { padding: 1rem 2rem; border-radius: 16px; font-weight: 700; border: none; cursor: pointer; }
+	.action-btn { padding: 1rem 2rem; border-radius: 16px; font-weight: 700; border: none; cursor: pointer; display: flex; align-items: center; gap: 0.5rem; transition: background 0.2s; }
 	.action-btn.primary { background: var(--accent-teal); color: var(--bg-primary); }
+	.action-btn.primary:hover { opacity: 0.9; }
+	.action-btn.secondary { background: var(--bg-secondary); color: var(--text-primary); border: 1px solid var(--border-subtle); }
+	.action-btn.secondary:hover { background: var(--border-subtle); }
 	.action-btn.text { background: none; color: var(--text-muted); text-decoration: underline; }
 
 	/* Mobile */
@@ -742,5 +743,41 @@ const personas = [
 		.scale-item { padding: 0.8rem 1.2rem; gap: 1rem; }
 		.scale-label { font-size: 1.1rem; }
 		.visuals-grid { grid-template-columns: 1fr; }
+	}
+
+	@media print {
+		.app-header, .actions-footer, .save-prompt, .question-nav, .progress-section, .welcome-badge, .stat-pill {
+			display: none !important;
+		}
+		.container {
+			padding: 0;
+			margin: 0;
+			display: block;
+			height: auto;
+		}
+		.results-container {
+			border: none;
+			box-shadow: none;
+			padding: 0;
+		}
+		.screen {
+			display: none !important;
+		}
+		.screen.active {
+			display: block !important;
+		}
+		body {
+			background: white !important;
+			color: black !important;
+		}
+		.radar-shape {
+			fill: rgba(45, 212, 191, 0.2) !important;
+			stroke: #0d9488 !important;
+		}
+		.trait-row {
+			background: #f8fafc !important;
+			border: 1px solid #e2e8f0 !important;
+			page-break-inside: avoid;
+		}
 	}
 </style>
