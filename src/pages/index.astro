@@ -7,7 +7,7 @@ const questions = [
 	{ en: "Does a thorough job", zh: "做事彻底", ja: "仕事を彻底的にやる", ko: "일을 철저하게 한다", es: "Hace un trabajo minucioso", fr: "Fait un travail minutieux", it: "Svolge i compiti in modo meticoloso" },
 	{ en: "Is depressed, blue", zh: "情绪低落、忧郁", ja: "落ち込みやすく、忧郁になる", ko: "우울하거나 기분이 처질 때가 있다", es: "Está deprimido/a, triste", fr: "Est déprimé(e), triste", it: "È depresso/a, malinconico/a" },
 	{ en: "Is original, comes up with new ideas", zh: "有创意，能想出新点子", ja: "独创的で、新しいアイデアを思いつく", ko: "독창적이며 새로운 아이디어를 낸다", es: "Es original, se le ocurren nuevas ideas", fr: "Est original(e), a de nouvelles idées", it: "È originale, ha sempre nuove idee" },
-	{ en: "Is reserved", zh: "内敛、矜持", ja: "控えめである", ko: "내성적이다", es: "Es reservado/a", fr: "Est réservé(e)", it: "È riservato/a" },
+/*	{ en: "Is reserved", zh: "内敛、矜持", ja: "控えめである", ko: "내성적이다", es: "Es reservado/a", fr: "Est réservé(e)", it: "È riservato/a" },
 	{ en: "Is helpful and unselfish with others", zh: "乐于助人且无私", ja: "他人に亲切で无私である", ko: "다른 사람들에게 도움이 되고 이타적이다", es: "Es servicial y desinteresado/a con los demás", fr: "Est serviable et désintéressé(e) avec les autres", it: "È disponibile e altruista con gli altri" },
 	{ en: "Can be somewhat careless", zh: "有时会粗心大意", ja: "いくらか不注意なところがある", ko: "다소 부주의할 때가 있다", es: "Puede ser algo descuidado/a", fr: "Peut être quelque peu insouciant(e)", it: "Può essere un po' trascurato/a" },
 	{ en: "Is relaxed, handles stress well", zh: "轻松自在，能很好地应对压力", ja: "リラックスしており、ストレスにうまく対処できる", ko: "편안하고 스트레스를 잘 다스린다", es: "Es relajado/a, maneja bien el estrés", fr: "Est détendu(e), gère bien le stress", it: "È rilassato/a, gestisce bene lo stress" },
@@ -45,7 +45,7 @@ const questions = [
 	{ en: "Has few artistic interests", zh: "对艺术兴趣不大", ja: "芸术的な兴味がほとんどない", ko: "예술적 관심이 거의 없다", es: "Tiene pocos intereses artísticos", fr: "A peu d'intérêts artistiques", it: "Ha pochi interessi artistici" },
 	{ en: "Likes to cooperate with others", zh: "喜欢与他人合作", ja: "他人と协力することが好きである", ko: "다른 사람들과 협력하는 것을 좋아한다", es: "Le gusta cooperar con los demás", fr: "Aime coopérer avec les autres", it: "Ama cooperare con gli altri" },
 	{ en: "Is easily distracted", zh: "容易分心", ja: "気が散りやすい", ko: "쉽게 주의가 산만해진다", es: "Se distrae fácilmente", fr: "Est facilement distrait(e)", it: "Si distrae facilmente" },
-	{ en: "Is sophisticated in art, music, or literature", zh: "在艺术、音乐或文学方面有较高修养", ja: "芸术、音楽、文学に精通している", ko: "예술, 음악 또는 문학에 조예가 깊다", es: "Es sofisticado/a en arte, música o literatura", fr: "Est sophistiqué(e) en art, musique ou littérature", it: "Si intende di arte, musica o letteratura" }
+*/	{ en: "Is sophisticated in art, music, or literature", zh: "在艺术、音乐或文学方面有较高修养", ja: "芸术、音楽、文学に精通している", ko: "예술, 음악 또는 문학에 조예가 깊다", es: "Es sofisticado/a en arte, música o literatura", fr: "Est sophistiqué(e) en art, musique ou littérature", it: "Si intende di arte, musica o letteratura" }
 ];
 
 const scales = [
@@ -313,7 +313,7 @@ const traitConfig = {
 				<div class="welcome-stats">
 					<div class="stat-pill">
 						<span class="icon">📋</span>
-						<span>44 
+						<span>{questions.length} 
 							<span class="text-en">Items</span>
 							<span class="text-zh">题目</span>
 							<span class="text-it">Elementi</span>
@@ -349,7 +349,7 @@ const traitConfig = {
 			<div class="progress-section">
 				<div class="progress-header">
 					<span class="text-en">Progress</span><span class="text-zh">进度</span><span class="text-it">Progresso</span>
-					<span id="current-num">1</span> / 44
+					<span id="current-num">1</span> / {questions.length}
 				</div>
 				<div class="progress-bar-bg"><div id="progress-fill" class="progress-fill"></div></div>
 			</div>
@@ -446,6 +446,20 @@ const traitConfig = {
 	</div>
 
 	<script define:vars={{ questions, traitConfig }}>
+		// Initialize Supabase (using CDN for compatibility with define:vars)
+		const SUPABASE_URL = 'https://khpirudvtntgrxdnomsl.supabase.co'; // <-- REPLACE THIS
+		const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtocGlydWR2dG50Z3J4ZG5vbXNsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njc1MTAwMjIsImV4cCI6MjA4MzA4NjAyMn0.55tHQzyLT84VZM5huiTWYO9uVvUJHEnGMBtVwsbMoxA'; // <-- REPLACE THIS
+		
+		let supabase = null;
+		
+		// Load Supabase script dynamically
+		const script = document.createElement('script');
+		script.src = 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2';
+		script.onload = () => {
+			supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+		};
+		document.head.appendChild(script);
+
 		const personas = [
 			{ 
 				id: "explorer", 
@@ -545,7 +559,7 @@ const traitConfig = {
 			});
 			
 			document.getElementById('current-num').textContent = currentQuestion + 1;
-			document.getElementById('progress-fill').style.width = `${((currentQuestion + 1) / 44) * 100}%`;
+			document.getElementById('progress-fill').style.width = `${((currentQuestion + 1) / questions.length) * 100}%`;
 			
 			const nextBtn = document.getElementById('next-btn');
 			const submitBtn = document.getElementById('submit-btn');
@@ -556,7 +570,7 @@ const traitConfig = {
 			nextBtn.disabled = !answered;
 			submitBtn.disabled = !answered;
 
-			if (currentQuestion === 43) {
+			if (currentQuestion === questions.length - 1) {
 				nextBtn.style.display = 'none';
 				submitBtn.style.display = 'block';
 			} else {
@@ -578,26 +592,7 @@ const traitConfig = {
 			const btn = e.target.closest('.scale-item');
 			if (btn) {
 				answers[currentQuestion] = parseInt(btn.dataset.value);
-				
-				// If it's the last question, show results directly
-				if (currentQuestion === 43) {
-					console.log('Last question answered, showing results directly');
-					try {
-						const scores = calculate();
-						localStorage.setItem('bfi_latest_results', JSON.stringify({
-							answers,
-							scores,
-							timestamp: new Date().toISOString()
-						}));
-						display(scores);
-						showScreen('results-screen');
-					} catch (err) {
-						console.error('Error calculating results:', err);
-						alert('There was an error calculating your results.');
-					}
-				} else {
-					updateQuestion();
-				}
+				updateQuestion();
 			}
 		});
 
@@ -606,10 +601,10 @@ const traitConfig = {
 		});
 
 		document.getElementById('next-btn').addEventListener('click', () => {
-			if (currentQuestion < 43) { currentQuestion++; updateQuestion(); }
+			if (currentQuestion < questions.length - 1) { currentQuestion++; updateQuestion(); }
 		});
 
-		document.getElementById('submit-btn').addEventListener('click', () => {
+		document.getElementById('submit-btn').addEventListener('click', async () => {
 			console.log('Submit clicked');
 			try {
 				const scores = calculate();
@@ -621,6 +616,30 @@ const traitConfig = {
 					scores,
 					timestamp: new Date().toISOString()
 				}));
+
+				// PUSH TO SUPABASE
+				if (supabase) {
+					const map = Object.fromEntries(Object.entries(scores).map(([k,v]) => [k, v.percent || 50]));
+					const p = personas.find(x => x.criteria(map)) || personas[personas.length-1];
+
+					const { error } = await supabase
+						.from('bfi_results')
+						.insert([
+							{ 
+								persona: p.id,
+								score_o: scores.O.percent,
+								score_c: scores.C.percent,
+								score_e: scores.E.percent,
+								score_a: scores.A.percent,
+								score_n: scores.N.percent,
+								language: currentLang,
+								answers: answers
+							}
+						]);
+					
+					if (error) console.error('Supabase error:', error);
+					else console.log('Successfully saved to Supabase!');
+				}
 
 				display(scores);
 				console.log('Display updated');
@@ -667,6 +686,7 @@ const traitConfig = {
 
 		function display(scores) {
 			const traits = ['O', 'C', 'E', 'A', 'N'];
+			const langs = ['en', 'zh', 'ja', 'ko', 'es', 'fr', 'it'];
 			
 			// Calculate radar points
 			const pts = traits.map((t, i) => {
@@ -687,18 +707,10 @@ const traitConfig = {
 			const nameEl = document.getElementById('persona-name');
 			const descEl = document.getElementById('persona-description');
 			if (nameEl) {
-				nameEl.innerHTML = `
-					<span class="text-en">${p.name.en}</span>
-					<span class="text-zh">${p.name.zh}</span>
-					<span class="text-it">${p.name.it}</span>
-				`;
+				nameEl.innerHTML = langs.map(l => `<span class="text-${l}">${p.name[l] || p.name.en}</span>`).join('');
 			}
 			if (descEl) {
-				descEl.innerHTML = `
-					<span class="text-en">${p.description.en}</span>
-					<span class="text-zh">${p.description.zh}</span>
-					<span class="text-it">${p.description.it}</span>
-				`;
+				descEl.innerHTML = langs.map(l => `<span class="text-${l}">${p.description[l] || p.description.en}</span>`).join('');
 			}
 
 			const list = document.getElementById('traits-display');
@@ -713,17 +725,16 @@ const traitConfig = {
 					else if (percent < 35) level = 'low';
 					
 					const summaryObj = config.personalized[level];
-					const summaryText = summaryObj[currentLang] || summaryObj.en;
 
 					return `
 						<div class="trait-row" style="--c: ${config.color}">
 							<div class="trait-info">
-								<span>${config.icon} ${config.fullName[currentLang] || config.fullName.en}</span>
+								<span>${config.icon} ${langs.map(l => `<span class="text-${l}">${config.fullName[l] || config.fullName.en}</span>`).join('')}</span>
 								<span>${percent.toFixed(0)}%</span>
 							</div>
 							<div class="trait-bar"><div style="width:${percent}%"></div></div>
 							<div class="trait-summary" style="margin-top: 0.5rem; font-size: 0.85rem; color: var(--text-secondary); line-height: 1.4;">
-								${summaryText}
+								${langs.map(l => `<span class="text-${l}">${summaryObj[l] || summaryObj.en}</span>`).join('')}
 							</div>
 						</div>
 					`;
