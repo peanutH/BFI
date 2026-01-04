@@ -2,12 +2,12 @@
 import Layout from '../layouts/Layout.astro';
 
 const questions = [
-	{ en: "Is talkative", zh: "健谈的", ja: "話し好きである", ko: "말이 많다", es: "Es hablador/a", fr: "Est bavard(e)", it: "È loquace" },
+ 	{ en: "Is talkative", zh: "健谈的", ja: "話し好きである", ko: "말이 많다", es: "Es hablador/a", fr: "Est bavard(e)", it: "È loquace" },
 	{ en: "Tends to find fault with others", zh: "喜欢挑别人的毛病", ja: "他人の欠点を探す傾向がある", ko: "다른 사람의 결점을 찾는 경향이 있다", es: "Tiende a encontrar faltas en los demás", fr: "A tendance à trouver des défauts aux autres", it: "Tende a trovare difetti negli altri" },
 	{ en: "Does a thorough job", zh: "做事彻底", ja: "仕事を彻底的にやる", ko: "일을 철저하게 한다", es: "Hace un trabajo minucioso", fr: "Fait un travail minutieux", it: "Svolge i compiti in modo meticoloso" },
 	{ en: "Is depressed, blue", zh: "情绪低落、忧郁", ja: "落ち込みやすく、忧郁になる", ko: "우울하거나 기분이 처질 때가 있다", es: "Está deprimido/a, triste", fr: "Est déprimé(e), triste", it: "È depresso/a, malinconico/a" },
 	{ en: "Is original, comes up with new ideas", zh: "有创意，能想出新点子", ja: "独创的で、新しいアイデアを思いつく", ko: "독창적이며 새로운 아이디어를 낸다", es: "Es original, se le ocurren nuevas ideas", fr: "Est original(e), a de nouvelles idées", it: "È originale, ha sempre nuove idee" },
-/*	{ en: "Is reserved", zh: "内敛、矜持", ja: "控えめである", ko: "내성적이다", es: "Es reservado/a", fr: "Est réservé(e)", it: "È riservato/a" },
+	{ en: "Is reserved", zh: "内敛、矜持", ja: "控えめである", ko: "내성적이다", es: "Es reservado/a", fr: "Est réservé(e)", it: "È riservato/a" },
 	{ en: "Is helpful and unselfish with others", zh: "乐于助人且无私", ja: "他人に亲切で无私である", ko: "다른 사람들에게 도움이 되고 이타적이다", es: "Es servicial y desinteresado/a con los demás", fr: "Est serviable et désintéressé(e) avec les autres", it: "È disponibile e altruista con gli altri" },
 	{ en: "Can be somewhat careless", zh: "有时会粗心大意", ja: "いくらか不注意なところがある", ko: "다소 부주의할 때가 있다", es: "Puede ser algo descuidado/a", fr: "Peut être quelque peu insouciant(e)", it: "Può essere un po' trascurato/a" },
 	{ en: "Is relaxed, handles stress well", zh: "轻松自在，能很好地应对压力", ja: "リラックスしており、ストレスにうまく対処できる", ko: "편안하고 스트레스를 잘 다스린다", es: "Es relajado/a, maneja bien el estrés", fr: "Est détendu(e), gère bien le stress", it: "È rilassato/a, gestisce bene lo stress" },
@@ -45,7 +45,7 @@ const questions = [
 	{ en: "Has few artistic interests", zh: "对艺术兴趣不大", ja: "芸术的な兴味がほとんどない", ko: "예술적 관심이 거의 없다", es: "Tiene pocos intereses artísticos", fr: "A peu d'intérêts artistiques", it: "Ha pochi interessi artistici" },
 	{ en: "Likes to cooperate with others", zh: "喜欢与他人合作", ja: "他人と协力することが好きである", ko: "다른 사람들과 협력하는 것을 좋아한다", es: "Le gusta cooperar con los demás", fr: "Aime coopérer avec les autres", it: "Ama cooperare con gli altri" },
 	{ en: "Is easily distracted", zh: "容易分心", ja: "気が散りやすい", ko: "쉽게 주의가 산만해진다", es: "Se distrae fácilmente", fr: "Est facilement distrait(e)", it: "Si distrae facilmente" },
-*/	{ en: "Is sophisticated in art, music, or literature", zh: "在艺术、音乐或文学方面有较高修养", ja: "芸术、音楽、文学に精通している", ko: "예술, 음악 또는 문학에 조예가 깊다", es: "Es sofisticado/a en arte, música o literatura", fr: "Est sophistiqué(e) en art, musique ou littérature", it: "Si intende di arte, musica o letteratura" }
+ 	{ en: "Is sophisticated in art, music, or literature", zh: "在艺术、音乐或文学方面有较高修养", ja: "芸术、音楽、文学に精通している", ko: "예술, 음악 또는 문학에 조예가 깊다", es: "Es sofisticado/a en arte, música o literatura", fr: "Est sophistiqué(e) en art, musique ou littérature", it: "Si intende di arte, musica o letteratura" }
 ];
 
 const scales = [
@@ -348,7 +348,7 @@ const traitConfig = {
 		<div id="question-screen" class="screen">
 			<div class="progress-section">
 				<div class="progress-header">
-					<span class="text-en">Progress</span><span class="text-zh">进度</span><span class="text-it">Progresso</span>
+					<span class="text-en">Progress</span><span class="text-zh">进度</span><span class="text-it">Progresso</span><span class="text-ja">進捗</span><span class="text-ko">진행률</span><span class="text-es">Progreso</span><span class="text-fr">Progrès</span>
 					<span id="current-num">1</span> / {questions.length}
 				</div>
 				<div class="progress-bar-bg"><div id="progress-fill" class="progress-fill"></div></div>
@@ -359,6 +359,10 @@ const traitConfig = {
 					<span class="text-en">I am someone who...</span>
 					<span class="text-zh">我是一个...</span>
 					<span class="text-it">Sono una persona che...</span>
+					<span class="text-ja">私は...</span>
+					<span class="text-ko">나는...</span>
+					<span class="text-es">Soy alguien que...</span>
+					<span class="text-fr">Je suis quelqu'un qui...</span>
 				</div>
 				<h2 class="question-text">
 					<span id="question-en" class="text-en"></span>
@@ -390,10 +394,10 @@ const traitConfig = {
 				<div class="question-nav">
 					<button id="prev-btn" class="nav-btn secondary" disabled>←</button>
 					<button id="next-btn" class="nav-btn primary" disabled>
-						<span class="text-en">Next Question</span><span class="text-zh">下一题</span><span class="text-it">Prossima</span>
+						<span class="text-en">Next Question</span><span class="text-zh">下一题</span><span class="text-it">Prossima</span><span class="text-ja">次の質問</span><span class="text-ko">다음 질문</span><span class="text-es">Siguiente pregunta</span><span class="text-fr">Question suivante</span>
 					</button>
 					<button id="submit-btn" class="nav-btn primary success" style="display:none">
-						<span class="text-en">Show My Results</span><span class="text-zh">查看我的结果</span><span class="text-it">Mostra Risultati</span>
+						<span class="text-en">Show My Results</span><span class="text-zh">查看我的结果</span><span class="text-it">Mostra Risultati</span><span class="text-ja">結果を表示する</span><span class="text-ko">결과 보기</span><span class="text-es">Ver mis resultados</span><span class="text-fr">Voir mes résultats</span>
 					</button>
 				</div>
 			</div>
@@ -404,7 +408,7 @@ const traitConfig = {
 			<div class="results-container">
 				<div class="persona-section">
 					<div id="persona-display" class="persona-badge">
-						<span class="text-en">Your Persona</span><span class="text-zh">您的角色</span><span class="text-it">La Tua Persona</span>
+						<span class="text-en">Your Persona</span><span class="text-zh">您的角色</span><span class="text-it">La Tua Persona</span><span class="text-ja">あなたのペルソナ</span><span class="text-ko">당신의 페르소나</span><span class="text-es">Tu Persona</span><span class="text-fr">Votre Persona</span>
 					</div>
 					<h1 id="persona-name" class="persona-title"></h1>
 					<p id="persona-description" class="persona-description"></p>
@@ -434,11 +438,15 @@ const traitConfig = {
 						<span class="text-en">Would you like to save your result summary as a PDF or Image?</span>
 						<span class="text-zh">您想将结果摘要保存为 PDF 或图片吗？</span>
 						<span class="text-it">Vuoi salvare il riepilogo dei risultati come PDF o Immagine?</span>
+						<span class="text-ja">結果の概要をPDFまたは画像として保存しますか？</span>
+						<span class="text-ko">결과 요약을 PDF 또는 이미지로 저장하시겠습니까?</span>
+						<span class="text-es">¿Le gustaría guardar su resumen de resultados como PDF o imagen?</span>
+						<span class="text-fr">Souhaitez-vous enregistrer le résumé de vos résultats au format PDF ou image ?</span>
 					</p>
 					<div class="actions-footer">
-						<button id="save-pdf-btn" class="action-btn primary">📄 <span class="text-en">Save as PDF / Image</span><span class="text-zh">保存为 PDF / 图片</span><span class="text-it">Salva come PDF / Immagine</span></button>
-						<button id="share-results-btn" class="action-btn secondary">📤 <span class="text-en">Share</span><span class="text-zh">分享</span><span class="text-it">Condividi</span></button>
-						<button id="restart-btn" class="action-btn text"><span class="text-en">Retake</span><span class="text-zh">重测</span><span class="text-it">Rifai</span></button>
+						<button id="save-pdf-btn" class="action-btn primary">📄 <span class="text-en">Save as PDF / Image</span><span class="text-zh">保存为 PDF / 图片</span><span class="text-it">Salva come PDF / Immagine</span><span class="text-ja">PDF / 画像として保存</span><span class="text-ko">PDF / 이미지로 저장</span><span class="text-es">Guardar como PDF / Imagen</span><span class="text-fr">Enregistrer en PDF / Image</span></button>
+						<button id="share-results-btn" class="action-btn secondary">📤 <span class="text-en">Share</span><span class="text-zh">分享</span><span class="text-it">Condividi</span><span class="text-ja">共有</span><span class="text-ko">공유하기</span><span class="text-es">Compartir</span><span class="text-fr">Partager</span></button>
+						<button id="restart-btn" class="action-btn text"><span class="text-en">Retake</span><span class="text-zh">重测</span><span class="text-it">Rifai</span><span class="text-ja">もう一度受ける</span><span class="text-ko">다시 하기</span><span class="text-es">Volver a hacer</span><span class="text-fr">Recommencer</span></button>
 					</div>
 				</div>
 			</div>
